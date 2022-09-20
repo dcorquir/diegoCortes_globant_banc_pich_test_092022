@@ -8,7 +8,56 @@ type DataRepositoriesMockServiceResponse {
   state: ID
 }
 
+type Mutation {
+  """🔖 Create a new organization in db"""
+  createOrganization(organization: OrganizationDataIn): SingleResponse!
+
+  """🔖 Update the organization in db"""
+  removeOrganization(
+    """Unique organization id"""
+    organization_id: Int
+  ): SingleResponse!
+
+  """🔖 Update the organization in db"""
+  updateOrganization(
+    organization: OrganizationDataIn
+
+    """Unique organization id"""
+    organization_id: Int
+  ): SingleResponse!
+}
+
+input OrganizationDataIn {
+  name: String
+  status: Int
+}
+
+"""The organization list service response structure"""
+type OrganizationListResponse {
+  data: [OrganizationResponse]
+
+  """ResponseCode"""
+  responseCode: ResponseCode
+  total_records: Int
+}
+
+"""Structure for data response to organization"""
+type OrganizationResponse {
+  id_organization: ID
+  name: String
+  status: Int
+}
+
 type Query {
+  """🔖 Get Repositories Mock, get mock data of repositories"""
+  getOrganizationsList(
+    """📌 Limit of list"""
+    limit: Int
+
+    """📌 Skip page"""
+    skip: Int
+  ): OrganizationListResponse!
+
   """🔖 Get Repositories Mock, get mock data of repositories"""
   getRepositoriesMock: RepositoriesMockServiceResponse!
 

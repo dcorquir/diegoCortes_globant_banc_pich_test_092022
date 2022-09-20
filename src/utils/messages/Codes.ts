@@ -14,7 +14,7 @@ export const Codes = {
             code: 'BC_PCH_00000',
             message: 'OK',
             level: 'INFO',
-            description: 'All is well!.',
+            description: 'Se ha procesoado correctamente.',
         }
     },
 
@@ -26,7 +26,7 @@ export const Codes = {
     BC_PCH_00002: (): Code => {
         return {
             code: 'BC_PCH_00002',
-            message: 'An internal exception has been occurred. Please try again.',
+            message: 'Ha ocurrido una excepcion interna. Por favor intentalo de nuevo.',
             level: 'EXCEPTION',
             description: 'An internal exception has been occurred.'
         }
@@ -40,13 +40,71 @@ export const Codes = {
     BC_PCH_00003: (): Code => {
         return {
             code: 'BC_PCH_00003',
-            message: 'Can not access.',
+            message: 'No se puede acceder.',
             level: 'UNAUTHORIZED',
-            description: 'You do not have permissions to access.'
+            description: 'No tienes permisos para acceder la módulo.'
         }
     },
 
     // #endregion [GENERAL_RESPONSES]
+
+    // #region [BUSSINESS_VALIDATIONS]
+
+    /**
+     * @description: This code is to describe when the name field is empty.
+     * @author: Diego Cortés <@DCORQUIR>
+     * @returns V_BC_PCH_00001
+     */
+     V_BC_PCH_00001: (): Code => {
+        return {
+            code: 'V_BC_PCH_00001',
+            message: 'El nombre de la organizacion es requerido.',
+            level: 'WARN',
+            description: 'El nombre de la organizacion no puede estar vacio.'
+        }
+    },
+    /**
+     * @description: This code is to describe when the status field is empty.
+     * @author: Diego Cortés <@DCORQUIR>
+     * @returns V_BC_PCH_00002
+     */
+     V_BC_PCH_00002: (): Code => {
+        return {
+            code: 'V_BC_PCH_00002',
+            message: 'El estado de la organizacion es requerido.',
+            level: 'WARN',
+            description: 'El estado de la organizacion no puede estar vacio.'
+        }
+    },
+    /**
+     * @description: This code is to describe when already exists a organization with the name in db.
+     * @author: Diego Cortés <@DCORQUIR>
+     * @returns V_BC_PCH_00003
+     */
+     V_BC_PCH_00003: (): Code => {
+        return {
+            code: 'V_BC_PCH_00003',
+            message: 'Ya existe una organizacon con ese nombre.',
+            level: 'WARN',
+            description: 'Ya existe una organizacon con ese nombre, registrada en la bd.'
+        }
+    },
+    /**
+     * @description: This code is to describe when the is organization is empty.
+     * @author: Diego Cortés <@DCORQUIR>
+     * @returns V_BC_PCH_00004
+     */
+     V_BC_PCH_00004: (): Code => {
+        return {
+            code: 'V_BC_PCH_00004',
+            message: 'El id de la organizacion es requerido.',
+            level: 'WARN',
+            description: 'El id de la organizacion no puede estar vacio.'
+        }
+    },
+
+    // #endregion [BUSSINESS_VALIDATIONS]
+
 
 };
 

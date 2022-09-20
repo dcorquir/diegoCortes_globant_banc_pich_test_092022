@@ -5,5 +5,6 @@ export const APPLICATION_TYPES = {
 
     /** Api Service **/
     IApiService: Symbol.for('IApiService'),
+    IApiDAO: Symbol.for('IApiDAO'),
 
 };

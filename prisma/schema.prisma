@@ -18,9 +18,10 @@ model metrics {
 }
 
 model organization {
-  id_organization Int     @id @default(autoincrement())
-  name            String  @db.VarChar(50)
+  id_organization Int      @id @default(autoincrement())
+  name            String   @db.VarChar(50)
   status          Int
+  deleted         Boolean? @default(false)
   tribe           tribe[]
 }
 

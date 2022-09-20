@@ -14,6 +14,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  OrganizationDataIn: { // input type
+    name?: string | null; // String
+    status?: number | null; // Int
+  }
 }
 
 export interface NexusGenEnums {
@@ -31,6 +35,17 @@ export interface NexusGenObjects {
   DataRepositoriesMockServiceResponse: { // root type
     id?: string | null; // ID
     state?: string | null; // ID
+  }
+  Mutation: {};
+  OrganizationListResponse: { // root type
+    data?: Array<NexusGenRootTypes['OrganizationResponse'] | null> | null; // [OrganizationResponse]
+    responseCode?: NexusGenRootTypes['ResponseCode'] | null; // ResponseCode
+    total_records?: number | null; // Int
+  }
+  OrganizationResponse: { // root type
+    id_organization?: string | null; // ID
+    name?: string | null; // String
+    status?: number | null; // Int
   }
   Query: {};
   RepositoriesMockServiceResponse: { // root type
@@ -63,7 +78,23 @@ export interface NexusGenFieldTypes {
     id: string | null; // ID
     state: string | null; // ID
   }
+  Mutation: { // field return type
+    createOrganization: NexusGenRootTypes['SingleResponse']; // SingleResponse!
+    removeOrganization: NexusGenRootTypes['SingleResponse']; // SingleResponse!
+    updateOrganization: NexusGenRootTypes['SingleResponse']; // SingleResponse!
+  }
+  OrganizationListResponse: { // field return type
+    data: Array<NexusGenRootTypes['OrganizationResponse'] | null> | null; // [OrganizationResponse]
+    responseCode: NexusGenRootTypes['ResponseCode'] | null; // ResponseCode
+    total_records: number | null; // Int
+  }
+  OrganizationResponse: { // field return type
+    id_organization: string | null; // ID
+    name: string | null; // String
+    status: number | null; // Int
+  }
   Query: { // field return type
+    getOrganizationsList: NexusGenRootTypes['OrganizationListResponse']; // OrganizationListResponse!
     getRepositoriesMock: NexusGenRootTypes['RepositoriesMockServiceResponse']; // RepositoriesMockServiceResponse!
     healthCheck: NexusGenRootTypes['SingleResponse']; // SingleResponse!
   }
@@ -87,7 +118,23 @@ export interface NexusGenFieldTypeNames {
     id: 'ID'
     state: 'ID'
   }
+  Mutation: { // field return type name
+    createOrganization: 'SingleResponse'
+    removeOrganization: 'SingleResponse'
+    updateOrganization: 'SingleResponse'
+  }
+  OrganizationListResponse: { // field return type name
+    data: 'OrganizationResponse'
+    responseCode: 'ResponseCode'
+    total_records: 'Int'
+  }
+  OrganizationResponse: { // field return type name
+    id_organization: 'ID'
+    name: 'String'
+    status: 'Int'
+  }
   Query: { // field return type name
+    getOrganizationsList: 'OrganizationListResponse'
     getRepositoriesMock: 'RepositoriesMockServiceResponse'
     healthCheck: 'SingleResponse'
   }
@@ -107,6 +154,24 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createOrganization: { // args
+      organization?: NexusGenInputs['OrganizationDataIn'] | null; // OrganizationDataIn
+    }
+    removeOrganization: { // args
+      organization_id?: number | null; // Int
+    }
+    updateOrganization: { // args
+      organization?: NexusGenInputs['OrganizationDataIn'] | null; // OrganizationDataIn
+      organization_id?: number | null; // Int
+    }
+  }
+  Query: {
+    getOrganizationsList: { // args
+      limit?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -117,7 +182,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

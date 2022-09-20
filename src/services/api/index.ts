@@ -7,8 +7,8 @@ import Server from '../../config/server/server-class';
 
 import * as typesCommon from './../../common/graphql/types-common';
 import * as typesOut from './graphql/types/types.out';
-// import * as typesIn from './graphql/types/types.in';
-// import * as mutations from './graphql/mutations';
+import * as typesIn from './graphql/types/types.in';
+import * as mutations from './graphql/mutations';
 import * as queries from './graphql/queries';
 
 
@@ -16,7 +16,9 @@ const nexusSchema: NexusGraphQLSchema = makeSchema({
     types: [
         typesCommon, 
         typesOut, 
-        queries
+        typesIn,
+        queries,
+        mutations
     ],
     outputs: {
         schema: join(process.cwd(), "schema.graphql"),

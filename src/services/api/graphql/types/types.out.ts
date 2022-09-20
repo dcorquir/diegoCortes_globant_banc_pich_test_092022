@@ -11,6 +11,16 @@ export const DataRepositoriesMockServiceResponse = objectType({
     },
 });
 
+export const OrganizationResponse = objectType({
+    name: 'OrganizationResponse',
+    description: 'Structure for data response to organization',
+    definition(t) {
+        t.nullable.id('id_organization'),
+        t.nullable.string('name'),
+        t.nullable.int('status')
+    },
+});
+
 // #endregion [DATA]
 
 // #region [RESPONSES]
@@ -36,6 +46,21 @@ export const RepositoriesMockServiceResponse = objectType({
         t.list.nullable.field('repositories', {
             type: 'DataRepositoriesMockServiceResponse'
         });
+    },
+});
+
+export const OrganizationListResponse = objectType({
+    name: 'OrganizationListResponse',
+    description: 'The organization list service response structure',
+    definition(t) {
+        t.field('responseCode', {
+            type: 'ResponseCode',
+            description: 'ResponseCode'
+        });
+        t.list.nullable.field('data', {
+            type: 'OrganizationResponse'
+        });
+        t.nullable.int('total_records')
     },
 });
 
