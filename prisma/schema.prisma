@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model metrics {
+  id_repository   Int        @id
+  coverage        Float
+  bugs            Int
+  vulnerabilities Int
+  hotspot         Int
+  code_smells     Int
+  repository      repository @relation(fields: [id_repository], references: [id_repository], onUpdate: Restrict, map: "metrics__repository_FK")
+}
+
+model organization {
+  id_organization Int     @id @default(autoincrement())
+  name            String  @db.VarChar(50)
+  status          Int
+  tribe           tribe[]
+}
+
+model repository {
+  id_repository Int      @id @default(autoincrement())
+  id_tribe      Int
+  name          String   @db.VarChar(50)
+  state         String   @db.VarChar(1)
+  create_time   DateTime @default(now()) @db.Timestamp(0)
+  status        String   @db.VarChar(1)
+  tribe         tribe    @relation(fields: [id_tribe], references: [id_tribe], onUpdate: Restrict, map: "repository_tribe_FK")
+  metrics       metrics?
+
+  @@index([id_tribe], map: "repository_tribe_FK")
+}
+
+model tribe {
+  id_tribe         Int          @id @default(autoincrement())
+  id_organizaation Int
+  name             String       @db.VarChar(50)
+  status           Int
+  organization     organization @relation(fields: [id_organizaation], references: [id_organization], onUpdate: Restrict, map: "tribe_organization_FK")
+  repository       repository[]
+
+  @@index([id_organizaation], map: "tribe_organization_FK")
+}
