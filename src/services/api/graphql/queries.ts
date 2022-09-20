@@ -1,6 +1,7 @@
 import { extendType, intArg, nonNull, stringArg, booleanArg, idArg } from "nexus";
 import { Codes } from './../../../utils/messages/Codes';
 import { AuthUtils } from './../../../utils/auth.utils';
+import { CommonUtils } from './../../../utils/common.utils';
 import {
     SingleResponse,
     RepositoriesMockServiceResponse
@@ -42,20 +43,7 @@ export const getRepositoriesMock = extendType({
                 if (!code) {
                     return {
                         responseCode: { ...Codes.BC_PCH_00000() },
-                        repositories: [
-                            {
-                                "id": 1,
-                                "state": 604
-                            },
-                            {
-                                "id": 2,
-                                "state": 605
-                            },
-                            {
-                                "id": 3,
-                                "state": 606
-                            }
-                        ]
+                        repositories: CommonUtils.getRepositoriesMockData()
                     };
                 } else {
                     return {
