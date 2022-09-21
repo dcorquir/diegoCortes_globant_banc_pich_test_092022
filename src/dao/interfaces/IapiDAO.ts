@@ -9,6 +9,7 @@ export interface IApiDAO {
     updateOrganization(organization_id: number, organization: IOrganizationCreate): Promise<number>;
     getOrganizationsList(skip: number, limit: number): Promise<IBasicListResponseDTO>;
     removeOrganization(organization_id: number): Promise<number>;
+    getTribeId(tribe_id: number): Promise<number>;
     getMetricsByTribeId(tribe_id: number): Promise<ITribeResponseDetailsDTO[]>;
 
 }

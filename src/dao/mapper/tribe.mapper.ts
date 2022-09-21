@@ -10,6 +10,7 @@ export const TribeMapper = {
             metrics = result.map((trb) => {
                 return {
                     ...trb,
+                    coverage: `${(trb.coverage*100)}%`,
                     verificationState: this.GET_VERIFICATION_STATE_BY_REPOSITORY_ID(trb.id),
                     state: this.GET_STATE_REPOSITORY(trb.state),
                 }

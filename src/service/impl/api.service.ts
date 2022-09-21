@@ -145,9 +145,14 @@ export class AppServiceImpl implements IApiService {
         let code = Codes.BC_PCH_00000();
         let data: ITribeResponseDetailsDTO[] = [];
         try {
-            data = await this.iAppDAO.getMetricsByTribeId(tribe_id);
-            console.log('DATA', JSON.stringify(data))
-            this.LOGGER.info(`[🔖💬][getMetricsByTribeId] - data: ${data}`);
+            let tribe_found = await this.iAppDAO.getTribeId(tribe_id);
+            if (tribe_found != -1) {
+                data = await this.iAppDAO.getMetricsByTribeId(tribe_id);
+                code = data.length > 0 ? code : Codes.V_BC_PCH_00006();
+                this.LOGGER.info(`[🔖💬][getMetricsByTribeId] - data: ${data}`);
+            } else {
+                code = Codes.V_BC_PCH_00005();
+            }
         } catch (error) {
             this.LOGGER.error(`[🔥🐛][getMetricsByTribeId] - Exception: ${error} 🚧`);
             code = Codes.BC_PCH_00002();
@@ -173,10 +178,8 @@ export class AppServiceImpl implements IApiService {
             let found = await this.iAppDAO.getMetricsByTribeId(tribe_id);
 
             data += FilesUtils.generateDataCsvMetricsByTribe(found);
-            console.log('data', data);
             let file = await fs.promises.writeFile(headerCsvMetricsByTribe.FILE_NAME, data, "utf-8");
-            console.log('file', file);
-        ret = 'data:application/octet-stream;base64,' + FilesUtils.base64Encode(`${headerCsvMetricsByTribe.FILE_PATH}${headerCsvMetricsByTribe.FILE_NAME}`);
+            ret = 'data:application/octet-stream;base64,' + FilesUtils.base64Encode(`${headerCsvMetricsByTribe.FILE_PATH}${headerCsvMetricsByTribe.FILE_NAME}`);
 
             this.LOGGER.info(`[🔖💬][getMetricsByTribeId] - data: ${data}`);
         } catch (error) {

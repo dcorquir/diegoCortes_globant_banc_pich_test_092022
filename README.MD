@@ -25,3 +25,12 @@ DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${MS_DB_AUT
 npm install --legacy-peer-deps
 npm run start:d:api
 ```
+
+### Docs Service and PlayGround
+
+Una vez el proyecto esté levantado, es posible ingrsar al playground, de graphql, para probar los servicios y ver la documentacion de los mismos. accediendo a la ruta:
+
+```env
+http://localhost:3000/graphql
+```
+

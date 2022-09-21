@@ -43,7 +43,7 @@ export class ApiDAO implements IApiDAO {
     public async createOrganization(data_organization: IOrganizationCreate): Promise<number> {
         this.LOGGER.info(`[🔖💬][DAO][createOrganization] - organization: ${JSON.stringify(data_organization)}`);
         try {
-            let new_org = await this.prisma.organization.create({
+            let new_org: any = await this.prisma.organization.create({
                 data: data_organization
             })
             return new_org.id_organization;
@@ -56,7 +56,7 @@ export class ApiDAO implements IApiDAO {
     public async updateOrganization(id: number, data_organization: IOrganizationCreate): Promise<number> {
         this.LOGGER.info(`[🔖💬][DAO][updateOrganization] - organization: ${JSON.stringify(data_organization)}`);
         try {
-            let upd_org = await this.prisma.organization.update({
+            let upd_org: any = await this.prisma.organization.update({
                 where: {
                     id_organization: id
                 },
@@ -79,7 +79,6 @@ export class ApiDAO implements IApiDAO {
                 take: limit
             });
             resp.total_records = await this.prisma.organization.count({});
-            console.log('data', data);
             resp.data = OrganizationMapper.GET_A_SINGLE_LIST_ORGANIZATIONS(data)
         } catch (error) {
             this.LOGGER.error(`|DB-EXCEPTION|[🐛🚨][updateOrganization] ${error} [💥]`);
@@ -100,6 +99,22 @@ export class ApiDAO implements IApiDAO {
             return 1;
         } catch (error) {
             this.LOGGER.error(`|DB-EXCEPTION|[🐛🚨][removeOrganization] ${error} [💥]`);
+            return -1;
+        }
+    }
+    
+    public async getTribeId(tribe_id: number): Promise<number> {
+        this.LOGGER.info(`[🔖💬][DAO][getTribeId] - tribe_id: ${tribe_id}`);
+        try {
+            let upd_org: any = await this.prisma.tribe.findFirst({
+                where: {
+                    id_tribe: tribe_id
+                }
+            });
+            this.LOGGER.info(`[🔖💬][DAO][getTribeId] - data: ${upd_org}`);
+            return Number(upd_org ? upd_org.id_tribe : -1);
+        } catch (error) {
+            this.LOGGER.error(`|DB-EXCEPTION|[🐛🚨][getTribeId] ${error} [💥]`);
             return -1;
         }
     }

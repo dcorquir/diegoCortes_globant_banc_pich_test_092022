@@ -102,6 +102,32 @@ export const Codes = {
             description: 'El id de la organizacion no puede estar vacio.'
         }
     },
+    /**
+     * @description: This code is to describe when the tribe do not exists in db.
+     * @author: Diego Cortés <@DCORQUIR>
+     * @returns V_BC_PCH_00005
+     */
+     V_BC_PCH_00005: (): Code => {
+        return {
+            code: 'V_BC_PCH_00005',
+            message: 'La Tribu no se encuentra registrada.',
+            level: 'WARN',
+            description: 'No se reconoce la informacino de la tribu en la bd.'
+        }
+    },
+    /**
+     * @description: This code is to describe when the tribe do not have repositories with 75% of coverage.
+     * @author: Diego Cortés <@DCORQUIR>
+     * @returns V_BC_PCH_00006
+     */
+     V_BC_PCH_00006: (): Code => {
+        return {
+            code: 'V_BC_PCH_00006',
+            message: 'La Tribu no tiene repositorios que cumplan con la cobertura necesaria.',
+            level: 'WARN',
+            description: 'La Tribu no tiene repositorios que cumplan con la cobertura necesaria.'
+        }
+    },
 
     // #endregion [BUSSINESS_VALIDATIONS]
 
