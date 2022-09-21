@@ -2,16 +2,18 @@
 
 1. Use NodeJS version **16.14.0**
 
-2. Create `.env` file on root and set values
+2. Use Graphql and Apollo server with TypeScript [https://www.howtographql.com/typescript-apollo/0-introduction/](https://www.howtographql.com/typescript-apollo/0-introduction/)
+
+3. Create `.env` file on root and set values
 
 ```env
-URL_API = 
-PORT_API = 
-CONTEXT_API = 
+URL_API =
+PORT_API =
+CONTEXT_API =
 
-ENV_LOGGER_DIRECTORY = 
-ENV_LOGGER_LEVEL = 
-LOG_FILE_NAME = 
+ENV_LOGGER_DIRECTORY =
+ENV_LOGGER_LEVEL =
+LOG_FILE_NAME =
 
 # Full environment string connection
 DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${MS_DB_AUTH}
@@ -19,11 +21,7 @@ DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${MS_DB_AUT
 
 ### Micro service
 
-1. npm install --legacy-peer-deps 
-4. npm run start:d:all
-
 ```bash
 npm install --legacy-peer-deps
 npm run start:d:api
 ```
-
