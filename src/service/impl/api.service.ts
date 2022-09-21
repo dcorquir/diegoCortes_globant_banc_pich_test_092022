@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import * as fs from 'fs';
+
 import { inject, injectable } from 'inversify';
 import { APPLICATION_TYPES } from "./../../config/inversify/ApplicationTypes";
 import { Codes } from './../../utils/messages/Codes';
@@ -7,6 +9,9 @@ import { LoggerCfg } from './../../config/Logger';
 import { IApiDAO } from './../../dao/interfaces/IapiDAO';
 import { IOrganizationCreate } from './../../services/api/dto/request/OrganizationDTO';
 import { IResponseDTO } from './../../services/api/dto/responses/ResponseDTO';
+import { ITribeResponseDetailsDTO } from './../../services/api/dto/responses/TribeResponsesDTO';
+import { headerCsvMetricsByTribe } from './../../utils/enums/repository.enum';
+import { FilesUtils } from './../../utils/files.utils';
 
 @injectable()
 export class AppServiceImpl implements IApiService {
@@ -43,7 +48,7 @@ export class AppServiceImpl implements IApiService {
                 } else {
                     code = Codes.V_BC_PCH_00003();
                 }
-                
+
             }
         } catch (error) {
             this.LOGGER.error(`[🔥🐛][createOrganization] - Exception: ${error} 🚧`);
@@ -132,5 +137,58 @@ export class AppServiceImpl implements IApiService {
         return {
             responseCode: { ...code }
         }
+    }
+
+    public async getMetricsByTribeId(tribe_id: number): Promise<IResponseDTO> {
+        this.LOGGER.info(`[🔖💬][SERVICE][getMetricsByTribeId] - tribe_id: ${tribe_id}`);
+
+        let code = Codes.BC_PCH_00000();
+        let data: ITribeResponseDetailsDTO[] = [];
+        try {
+            data = await this.iAppDAO.getMetricsByTribeId(tribe_id);
+            console.log('DATA', JSON.stringify(data))
+            this.LOGGER.info(`[🔖💬][getMetricsByTribeId] - data: ${data}`);
+        } catch (error) {
+            this.LOGGER.error(`[🔥🐛][getMetricsByTribeId] - Exception: ${error} 🚧`);
+            code = Codes.BC_PCH_00002();
+            code.message = JSON.stringify(error);
+        }
+
+        return {
+            responseCode: { ...code },
+            data: data
+        }
+
+    }
+
+
+    public async getCsvMetricsByTribeId(tribe_id: number): Promise<IResponseDTO> {
+        this.LOGGER.info(`[🔖💬][SERVICE][getMetricsByTribeId] - tribe_id: ${tribe_id}`);
+
+        let code = Codes.BC_PCH_00000();
+        let ret: string = '';
+        try {
+
+            let data: string = headerCsvMetricsByTribe.HEADER;
+            let found = await this.iAppDAO.getMetricsByTribeId(tribe_id);
+
+            data += FilesUtils.generateDataCsvMetricsByTribe(found);
+            console.log('data', data);
+            let file = await fs.promises.writeFile(headerCsvMetricsByTribe.FILE_NAME, data, "utf-8");
+            console.log('file', file);
+        ret = 'data:application/octet-stream;base64,' + FilesUtils.base64Encode(`${headerCsvMetricsByTribe.FILE_PATH}${headerCsvMetricsByTribe.FILE_NAME}`);
+
+            this.LOGGER.info(`[🔖💬][getMetricsByTribeId] - data: ${data}`);
+        } catch (error) {
+            this.LOGGER.error(`[🔥🐛][getMetricsByTribeId] - Exception: ${error} 🚧`);
+            code = Codes.BC_PCH_00002();
+            code.message = JSON.stringify(error);
+        }
+
+        return {
+            responseCode: { ...code },
+            data: ret
+        }
+
     }
 }

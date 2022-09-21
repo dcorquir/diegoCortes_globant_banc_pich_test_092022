@@ -32,9 +32,30 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  CsvMetricsByTribeListResponse: { // root type
+    data?: string | null; // String
+    responseCode?: NexusGenRootTypes['ResponseCode'] | null; // ResponseCode
+  }
   DataRepositoriesMockServiceResponse: { // root type
     id?: string | null; // ID
     state?: string | null; // ID
+  }
+  MetricsByTribeListResponse: { // root type
+    data?: Array<NexusGenRootTypes['MetricsByTribeResponse'] | null> | null; // [MetricsByTribeResponse]
+    responseCode?: NexusGenRootTypes['ResponseCode'] | null; // ResponseCode
+    total_records?: number | null; // Int
+  }
+  MetricsByTribeResponse: { // root type
+    bugs?: string | null; // String
+    codeSmells?: string | null; // String
+    coverage?: string | null; // String
+    hotspots?: string | null; // String
+    id?: string | null; // ID
+    name?: string | null; // String
+    organization?: string | null; // String
+    state?: string | null; // String
+    verificationState?: string | null; // String
+    vulnerabilities?: string | null; // String
   }
   Mutation: {};
   OrganizationListResponse: { // root type
@@ -43,7 +64,7 @@ export interface NexusGenObjects {
     total_records?: number | null; // Int
   }
   OrganizationResponse: { // root type
-    id_organization?: string | null; // ID
+    id_organization?: number | null; // Int
     name?: string | null; // String
     status?: number | null; // Int
   }
@@ -74,9 +95,30 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  CsvMetricsByTribeListResponse: { // field return type
+    data: string | null; // String
+    responseCode: NexusGenRootTypes['ResponseCode'] | null; // ResponseCode
+  }
   DataRepositoriesMockServiceResponse: { // field return type
     id: string | null; // ID
     state: string | null; // ID
+  }
+  MetricsByTribeListResponse: { // field return type
+    data: Array<NexusGenRootTypes['MetricsByTribeResponse'] | null> | null; // [MetricsByTribeResponse]
+    responseCode: NexusGenRootTypes['ResponseCode'] | null; // ResponseCode
+    total_records: number | null; // Int
+  }
+  MetricsByTribeResponse: { // field return type
+    bugs: string | null; // String
+    codeSmells: string | null; // String
+    coverage: string | null; // String
+    hotspots: string | null; // String
+    id: string | null; // ID
+    name: string | null; // String
+    organization: string | null; // String
+    state: string | null; // String
+    verificationState: string | null; // String
+    vulnerabilities: string | null; // String
   }
   Mutation: { // field return type
     createOrganization: NexusGenRootTypes['SingleResponse']; // SingleResponse!
@@ -89,11 +131,13 @@ export interface NexusGenFieldTypes {
     total_records: number | null; // Int
   }
   OrganizationResponse: { // field return type
-    id_organization: string | null; // ID
+    id_organization: number | null; // Int
     name: string | null; // String
     status: number | null; // Int
   }
   Query: { // field return type
+    getCsvMetricsByTribeId: NexusGenRootTypes['CsvMetricsByTribeListResponse']; // CsvMetricsByTribeListResponse!
+    getMetricsByTribeId: NexusGenRootTypes['MetricsByTribeListResponse']; // MetricsByTribeListResponse!
     getOrganizationsList: NexusGenRootTypes['OrganizationListResponse']; // OrganizationListResponse!
     getRepositoriesMock: NexusGenRootTypes['RepositoriesMockServiceResponse']; // RepositoriesMockServiceResponse!
     healthCheck: NexusGenRootTypes['SingleResponse']; // SingleResponse!
@@ -114,9 +158,30 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  CsvMetricsByTribeListResponse: { // field return type name
+    data: 'String'
+    responseCode: 'ResponseCode'
+  }
   DataRepositoriesMockServiceResponse: { // field return type name
     id: 'ID'
     state: 'ID'
+  }
+  MetricsByTribeListResponse: { // field return type name
+    data: 'MetricsByTribeResponse'
+    responseCode: 'ResponseCode'
+    total_records: 'Int'
+  }
+  MetricsByTribeResponse: { // field return type name
+    bugs: 'String'
+    codeSmells: 'String'
+    coverage: 'String'
+    hotspots: 'String'
+    id: 'ID'
+    name: 'String'
+    organization: 'String'
+    state: 'String'
+    verificationState: 'String'
+    vulnerabilities: 'String'
   }
   Mutation: { // field return type name
     createOrganization: 'SingleResponse'
@@ -129,11 +194,13 @@ export interface NexusGenFieldTypeNames {
     total_records: 'Int'
   }
   OrganizationResponse: { // field return type name
-    id_organization: 'ID'
+    id_organization: 'Int'
     name: 'String'
     status: 'Int'
   }
   Query: { // field return type name
+    getCsvMetricsByTribeId: 'CsvMetricsByTribeListResponse'
+    getMetricsByTribeId: 'MetricsByTribeListResponse'
     getOrganizationsList: 'OrganizationListResponse'
     getRepositoriesMock: 'RepositoriesMockServiceResponse'
     healthCheck: 'SingleResponse'
@@ -167,6 +234,12 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getCsvMetricsByTribeId: { // args
+      tribe_id?: number | null; // Int
+    }
+    getMetricsByTribeId: { // args
+      tribe_id?: number | null; // Int
+    }
     getOrganizationsList: { // args
       limit?: number | null; // Int
       skip?: number | null; // Int

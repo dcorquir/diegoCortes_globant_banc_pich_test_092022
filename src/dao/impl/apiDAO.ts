@@ -6,8 +6,10 @@ import { LoggerCfg } from './../../config/Logger';
 import { APPLICATION_TYPES } from "../../config/inversify/ApplicationTypes";
 import { IOrganizationCreate, IOrganization } from './../../services/api/dto/request/OrganizationDTO';
 import { OrganizationMapper } from './../mapper/organization.mapper';
+import { TribeMapper } from './../mapper/tribe.mapper';
 import { IBasicListResponseDTO } from './../../services/api/dto/responses/ResponseDTO';
-
+import { ITribeResponseDetailsDTO } from './../../services/api/dto/responses/TribeResponsesDTO';
+import { queries } from './../../utils/enums/mock.enum';
 @injectable()
 export class ApiDAO implements IApiDAO {
     private readonly LOGGER = LoggerCfg.getLogger();
@@ -77,6 +79,7 @@ export class ApiDAO implements IApiDAO {
                 take: limit
             });
             resp.total_records = await this.prisma.organization.count({});
+            console.log('data', data);
             resp.data = OrganizationMapper.GET_A_SINGLE_LIST_ORGANIZATIONS(data)
         } catch (error) {
             this.LOGGER.error(`|DB-EXCEPTION|[🐛🚨][updateOrganization] ${error} [💥]`);
@@ -99,5 +102,39 @@ export class ApiDAO implements IApiDAO {
             this.LOGGER.error(`|DB-EXCEPTION|[🐛🚨][removeOrganization] ${error} [💥]`);
             return -1;
         }
+    }
+
+    public async getMetricsByTribeId(tribe_id: number): Promise<ITribeResponseDetailsDTO[]> {
+        this.LOGGER.info(`[🔖💬][DAO][getMetricsByTribeId] - tribe_id: ${tribe_id}`);
+        let rsp: ITribeResponseDetailsDTO[] = [];
+        try {
+            let found: any = await this.prisma.$queryRaw`
+                            select 
+                                r.id_repository as id,
+                                r.name as name,
+                                t.name as tribe,
+                                o.name as organization,
+                                m.coverage,
+                                m.code_smells as codeSmells,
+                                m.bugs as bugs,
+                                m.vulnerabilities,
+                                m.hotspot as hotspots,
+                                r.state
+                            from 
+                                repository r 
+                                join metrics m on m.id_repository = r.id_repository 
+                                join tribe t on t.id_tribe = r.id_tribe
+                                join organization o on o.id_organization = t.id_organization  
+                            where 
+                                r.id_tribe = ${tribe_id}
+                                and o.deleted = false
+                                and m.coverage >= 0.75
+                                and extract(year from r.create_time) = extract(year from current_date);
+            `;
+            return TribeMapper.GET_METRICS_A_TRIBE(found);
+        } catch (error) {
+            this.LOGGER.error(`|DB-EXCEPTION|[🐛🚨][getMetricsByTribeId] ${error} [💥]`);
+        }
+        return rsp;
     }
 }

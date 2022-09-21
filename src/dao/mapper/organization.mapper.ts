@@ -5,9 +5,13 @@ export const OrganizationMapper = {
     GET_A_SINGLE_ORGANIZATION: function (result: any): IOrganization {
         let org;
         if (result) {
-            org = {...result};
+            org = {
+                id_organization: Number(result.id_organization),
+                name: `${result.name}`,
+                status: Number(result.status)
+            };
         }
-        return org;
+        return org as unknown as IOrganization;
     },
     GET_A_SINGLE_LIST_ORGANIZATIONS: function (result: any[]): IOrganization[] {
         let org: IOrganization[] = [];

@@ -17,19 +17,13 @@ LOG_FILE_NAME =
 DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${MS_DB_AUTH}
 ```
 
-## Whit NODEMON
-
 ### Micro service
 
 1. npm install --legacy-peer-deps 
-2. npm run prisma:generate
-3. npm run generate:nexus
 4. npm run start:d:all
 
 ```bash
-npm install
-npm run prisma:generate
-npm run generate:nexus
+npm install --legacy-peer-deps
 npm run start:d:api
 ```
 

@@ -3,48 +3,44 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
 model metrics {
-  id_repository   Int        @id
+  id_repository   BigInt     @id(map: "metrics_pk")
   coverage        Float
-  bugs            Int
-  vulnerabilities Int
-  hotspot         Int
-  code_smells     Int
-  repository      repository @relation(fields: [id_repository], references: [id_repository], onUpdate: Restrict, map: "metrics__repository_FK")
+  bugs            BigInt
+  vulnerabilities BigInt
+  hotspot         BigInt
+  code_smells     BigInt
+  repository      repository @relation(fields: [id_repository], references: [id_repository], onDelete: NoAction, onUpdate: NoAction, map: "metrics_repository_fk")
 }
 
 model organization {
-  id_organization Int      @id @default(autoincrement())
-  name            String   @db.VarChar(50)
-  status          Int
+  id_organization BigInt   @id(map: "organization_pk") @default(sequence())
+  name            String   @db.Char(50)
+  status          BigInt
   deleted         Boolean? @default(false)
   tribe           tribe[]
 }
 
 model repository {
-  id_repository Int      @id @default(autoincrement())
-  id_tribe      Int
-  name          String   @db.VarChar(50)
-  state         String   @db.VarChar(1)
-  create_time   DateTime @default(now()) @db.Timestamp(0)
-  status        String   @db.VarChar(1)
-  tribe         tribe    @relation(fields: [id_tribe], references: [id_tribe], onUpdate: Restrict, map: "repository_tribe_FK")
+  id_repository BigInt   @id(map: "repository_pk") @default(sequence())
+  id_tribe      BigInt
+  name          String   @db.Char(50)
+  state         String   @db.Char(1)
+  create_time   DateTime @default(now()) @db.Timestamptz(6)
+  status        String?  @db.Char(1)
+  tribe         tribe    @relation(fields: [id_tribe], references: [id_tribe], onDelete: NoAction, onUpdate: NoAction, map: "repository_tribe_fk")
   metrics       metrics?
-
-  @@index([id_tribe], map: "repository_tribe_FK")
 }
 
 model tribe {
-  id_tribe         Int          @id @default(autoincrement())
-  id_organizaation Int
-  name             String       @db.VarChar(50)
-  status           Int
-  organization     organization @relation(fields: [id_organizaation], references: [id_organization], onUpdate: Restrict, map: "tribe_organization_FK")
-  repository       repository[]
-
-  @@index([id_organizaation], map: "tribe_organization_FK")
+  id_tribe        BigInt       @id(map: "tribe_pk") @default(sequence())
+  id_organization BigInt
+  name            String       @db.Char(50)
+  status          BigInt
+  organization    organization @relation(fields: [id_organization], references: [id_organization], onDelete: NoAction, onUpdate: NoAction, map: "tribe_organization_fk")
+  repository      repository[]
 }

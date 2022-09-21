@@ -2,10 +2,45 @@
 ### Do not make changes to this file directly
 
 
+"""
+The csv of metrics from a repository by tribe id list service response structure
+"""
+type CsvMetricsByTribeListResponse {
+  data: String
+
+  """ResponseCode"""
+  responseCode: ResponseCode
+}
+
 """Structure for data response to repositories mock service"""
 type DataRepositoriesMockServiceResponse {
   id: ID
   state: ID
+}
+
+"""
+The metrics from a repository by tribe id list service response structure
+"""
+type MetricsByTribeListResponse {
+  data: [MetricsByTribeResponse]
+
+  """ResponseCode"""
+  responseCode: ResponseCode
+  total_records: Int
+}
+
+"""Structure for data response to metrics by tribe"""
+type MetricsByTribeResponse {
+  bugs: String
+  codeSmells: String
+  coverage: String
+  hotspots: String
+  id: ID
+  name: String
+  organization: String
+  state: String
+  verificationState: String
+  vulnerabilities: String
 }
 
 type Mutation {
@@ -43,12 +78,24 @@ type OrganizationListResponse {
 
 """Structure for data response to organization"""
 type OrganizationResponse {
-  id_organization: ID
+  id_organization: Int
   name: String
   status: Int
 }
 
 type Query {
+  """🔖 Get Repositories Mock, get mock data of repositories"""
+  getCsvMetricsByTribeId(
+    """📌 Skip page"""
+    tribe_id: Int
+  ): CsvMetricsByTribeListResponse!
+
+  """🔖 Get Repositories Mock, get mock data of repositories"""
+  getMetricsByTribeId(
+    """📌 Skip page"""
+    tribe_id: Int
+  ): MetricsByTribeListResponse!
+
   """🔖 Get Repositories Mock, get mock data of repositories"""
   getOrganizationsList(
     """📌 Limit of list"""

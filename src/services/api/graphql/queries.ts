@@ -9,7 +9,9 @@ import { IResponseDTO } from './../dto/responses/ResponseDTO';
 import {
     SingleResponse,
     RepositoriesMockServiceResponse,
-    OrganizationListResponse
+    OrganizationListResponse,
+    MetricsByTribeListResponse,
+    CsvMetricsByTribeListResponse
 } from './types/types.out';
 
 /**
@@ -89,3 +91,62 @@ export const getRepositoriesMock = extendType({
         });
     },
 });
+
+/**
+ * @description 📝 This query is to call the service to get metrics by tribe id
+ * @author 👷 Diego Cortés <@dcorquir>
+ */
+ export const getMetricsByTribeId = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.field("getMetricsByTribeId", {
+            type: MetricsByTribeListResponse,
+            description: '🔖 Get Repositories Mock, get mock data of repositories',
+            args: {
+                tribe_id: intArg({ description: '📌 Skip page' }),
+            },
+            async resolve(parent, args, context, info) {
+                let code = AuthUtils.validateAuthorization(context.user_session);
+                if (!code) {
+                    let apiService = AppContainer.get<IApiService>(APPLICATION_TYPES.IApiService);
+                    let resp: IResponseDTO = await apiService.getMetricsByTribeId(args.tribe_id);
+                    return resp;
+                } else {
+                    return {
+                        responseCode: { ...code },
+                    }
+                }
+            },
+        });
+    },
+});
+
+/**
+ * @description 📝 This query is to call the service to get csv with metrics by tribe id
+ * @author 👷 Diego Cortés <@dcorquir>
+ */
+ export const getCsvMetricsByTribeId = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.field("getCsvMetricsByTribeId", {
+            type: CsvMetricsByTribeListResponse,
+            description: '🔖 Get Repositories Mock, get mock data of repositories',
+            args: {
+                tribe_id: intArg({ description: '📌 Skip page' }),
+            },
+            async resolve(parent, args, context, info) {
+                let code = AuthUtils.validateAuthorization(context.user_session);
+                if (!code) {
+                    let apiService = AppContainer.get<IApiService>(APPLICATION_TYPES.IApiService);
+                    let resp: IResponseDTO = await apiService.getCsvMetricsByTribeId(args.tribe_id);
+                    return resp;
+                } else {
+                    return {
+                        responseCode: { ...code },
+                    }
+                }
+            },
+        });
+    },
+});
+

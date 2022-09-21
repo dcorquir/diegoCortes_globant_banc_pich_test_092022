@@ -7,5 +7,7 @@ export interface IApiService {
     updateOrganization(organization_id: number, organization: IOrganizationCreate): Promise<IResponseDTO>;
     getOrganizationsList(skip: number, limit: number): Promise<IResponseDTO>;
     removeOrganization(organization_id: number): Promise<IResponseDTO>;
+    getMetricsByTribeId(tribe_id: number): Promise<IResponseDTO>;
+    getCsvMetricsByTribeId(tribe_id: number): Promise<IResponseDTO>;
 
 }
